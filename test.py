@@ -1,31 +1,9 @@
 import networkx as nx
 import random
+from src.bron_kerbosch import bron_kerbosch
 import matplotlib.pyplot as plt
-
-def bron_kerbosch(graph, clique=[], candidates=[], excluded=[]):
-    if not candidates and not excluded:
-        return clique
-    max_clique = clique
-    for vertex in candidates[:]:
-        neighbors = set(graph.neighbors(vertex))
-        if(vertex in neighbors):
-          continue
-        cur_clique = bron_kerbosch(
-            graph,
-            clique + [vertex],
-            candidates=[c for c in candidates if c in neighbors],
-            excluded=[c for c in excluded if c in neighbors],
-        )
-        if(len(cur_clique) > len(max_clique)):
-          max_clique = cur_clique
-
-        candidates.remove(vertex)
-        excluded.append(vertex)
-    return max_clique
-
-def bron_kerbosch_main(graph):
-    return bron_kerbosch(graph, candidates=list(graph.nodes()))
-
+import os
+IMG_DIR = 'img'
 def clique(n_clique):
   for i in range(1,n_clique+1):
       for j in range(i+1,n_clique+1):
@@ -46,7 +24,7 @@ if __name__ == '__main__':
 
   G.add_edges_from(edges+clique_edges)
 
-  max_clique = bron_kerbosch_main(G)
+  max_clique = bron_kerbosch(G)
   cmap = lambda node : 'red' if node in max_clique else 'blue'
   node_color = list(map(cmap,G.nodes))
   pos = nx.spring_layout(G)
@@ -54,4 +32,4 @@ if __name__ == '__main__':
   ax = fig.add_subplot(111)
   nx.draw(G,pos=pos,node_color=node_color,with_labels=True, node_size=100, font_size=10,ax=ax)
   ax.set_title(f'Graph with a {len(max_clique)} clique')
-  fig.savefig('graph.png')
+  fig.savefig(os.path.join(IMG_DIR,'clique.png'))
