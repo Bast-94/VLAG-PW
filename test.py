@@ -16,8 +16,8 @@ def edges_list(n_clique, additional_nodes):
 
 if __name__ == '__main__':
   G = nx.Graph()
-  n_clique= 5
-  additional_nodes = 20
+  n_clique= 6
+  additional_nodes = 25
   clique_edges = list(clique(n_clique))
 
   edges = list(edges_list(n_clique, additional_nodes))
