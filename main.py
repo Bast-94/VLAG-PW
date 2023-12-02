@@ -1,3 +1,4 @@
+import argparse
 import os
 import random
 
@@ -7,7 +8,7 @@ import networkx as nx
 from src.bron_kerbosch import bron_kerbosch
 from src.bron_kerbosch_degeneracy import bron_kerbosch_degeneracy
 from src.bron_kerbosch_pivot import bron_kerbosch_pivot
-import argparse
+
 IMG_DIR = "img"
 
 
@@ -27,8 +28,8 @@ def edges_list(n_clique, additional_nodes):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c","--n-clique", type=int, default=5)
-    parser.add_argument("-a","--additional-nodes", type=int, default=54)
+    parser.add_argument("-c", "--n-clique", type=int, default=5)
+    parser.add_argument("-a", "--additional-nodes", type=int, default=54)
     G = nx.Graph()
     n_clique = parser.parse_args().n_clique
     additional_nodes = parser.parse_args().additional_nodes
