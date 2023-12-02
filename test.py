@@ -1,6 +1,8 @@
 import networkx as nx
 import random
 from src.bron_kerbosch import bron_kerbosch
+from src.bron_kerbosch_pivot import bron_kerbosch_pivot 
+from src.bron_kerbosch_degeneracy import bron_kerbosch_degeneracy
 import matplotlib.pyplot as plt
 import os
 IMG_DIR = 'img'
@@ -16,20 +18,24 @@ def edges_list(n_clique, additional_nodes):
 
 if __name__ == '__main__':
   G = nx.Graph()
-  n_clique= 6
-  additional_nodes = 25
+  n_clique= 8
+  additional_nodes = 17
   clique_edges = list(clique(n_clique))
 
   edges = list(edges_list(n_clique, additional_nodes))
 
   G.add_edges_from(edges+clique_edges)
-
-  max_clique = bron_kerbosch(G)
-  cmap = lambda node : 'red' if node in max_clique else 'blue'
-  node_color = list(map(cmap,G.nodes))
-  pos = nx.spring_layout(G)
+  bron_kerbosch_funcs = [bron_kerbosch, bron_kerbosch_pivot, bron_kerbosch_degeneracy]
   fig = plt.figure()
-  ax = fig.add_subplot(111)
-  nx.draw(G,pos=pos,node_color=node_color,with_labels=True, node_size=100, font_size=10,ax=ax)
-  ax.set_title(f'Graph with a {len(max_clique)} clique')
-  fig.savefig(os.path.join(IMG_DIR,'clique.png'))
+  for func in bron_kerbosch_funcs:
+    max_clique = func(G)
+    
+    cmap = lambda node : 'red' if node in max_clique else 'blue'
+    node_color = list(map(cmap,G.nodes))
+    pos = nx.spring_layout(G)
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    nx.draw(G,pos=pos,node_color=node_color,with_labels=True, node_size=100, font_size=10,ax=ax)
+    ax.set_title(f'Graph with a {len(max_clique)} clique using {func.__name__}')
+    fig.savefig(os.path.join(IMG_DIR,f'{func.__name__}.png'))
+  
