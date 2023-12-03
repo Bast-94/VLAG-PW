@@ -22,7 +22,7 @@ def naive_clique_search(G: nx.graph):
 
     for i in tqdm(range(1, G.number_of_nodes() + 1), desc="Naive clique search"):
         combinations = list(nodes_combinations(G.nodes(), i))
-        for nodes in tqdm(combinations):
+        for nodes in (combinations):
             nodes = list(nodes)
             if len(nodes) > max_clique_size and is_clique(G, nodes):
                 max_clique = set(nodes)

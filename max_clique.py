@@ -10,6 +10,7 @@ from src.bron_kerbosch import bron_kerbosch
 from src.bron_kerbosch_degeneracy import bron_kerbosch_degeneracy
 from src.bron_kerbosch_pivot import bron_kerbosch_pivot
 from src.naive_clique_search import naive_clique_search
+from src.pyspark_naive_clique_search import pyspark_naive_clique_search
 from src.utils import clique, edges_list
 
 IMG_DIR = "img"
@@ -32,6 +33,7 @@ if __name__ == "__main__":
         bron_kerbosch_pivot,
         bron_kerbosch_degeneracy,
         naive_clique_search,
+        pyspark_naive_clique_search,
     ]
     fig = plt.figure()
     for func in bron_kerbosch_funcs:
@@ -39,7 +41,9 @@ if __name__ == "__main__":
         max_clique = func(G)
         end = time.time()
         delta = end - begin
+        assert max_clique is not None, f"Max clique is empty function: {func.__name__}"
         cmap = lambda node: "red" if node in max_clique else "blue"
+        assert G.nodes is not None, f"Graph is empty function: {func.__name__}"
         node_color = list(map(cmap, G.nodes))
         pos = nx.spring_layout(G)
         fig = plt.figure()
