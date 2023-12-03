@@ -1,15 +1,17 @@
 import argparse
 import os
 import random
+import time
 
 import matplotlib.pyplot as plt
 import networkx as nx
-from src.utils import clique, edges_list
+
 from src.bron_kerbosch import bron_kerbosch
 from src.bron_kerbosch_degeneracy import bron_kerbosch_degeneracy
 from src.bron_kerbosch_pivot import bron_kerbosch_pivot
 from src.naive_clique_search import naive_clique_search
-import time
+from src.utils import clique, edges_list
+
 IMG_DIR = "img"
 
 
@@ -25,7 +27,12 @@ if __name__ == "__main__":
     edges = list(edges_list(n_clique, additional_nodes))
 
     G.add_edges_from(edges + clique_edges)
-    bron_kerbosch_funcs = [bron_kerbosch, bron_kerbosch_pivot, bron_kerbosch_degeneracy, naive_clique_search]
+    bron_kerbosch_funcs = [
+        bron_kerbosch,
+        bron_kerbosch_pivot,
+        bron_kerbosch_degeneracy,
+        naive_clique_search,
+    ]
     fig = plt.figure()
     for func in bron_kerbosch_funcs:
         begin = time.time()
@@ -46,5 +53,7 @@ if __name__ == "__main__":
             font_size=10,
             ax=ax,
         )
-        ax.set_title(f"Graph with a {len(max_clique)} clique using {func.__name__}, time: {delta:.2f}s")
+        ax.set_title(
+            f"Graph with a {len(max_clique)} clique using {func.__name__}, time: {delta:.2f}s"
+        )
         fig.savefig(os.path.join(IMG_DIR, f"{func.__name__}.png"))

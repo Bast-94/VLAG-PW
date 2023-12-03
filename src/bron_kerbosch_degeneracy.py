@@ -3,7 +3,7 @@ import networkx as nx
 from src.bron_kerbosch_pivot import bron_kerbosch_pivot_rec
 
 
-def degeneracy_ordering(graph: nx):
+def degeneracy_ordering(graph: nx.Graph):
     degeneracy_list = []
     degrees = {node: deg for _, (node, deg) in enumerate(graph.degree)}
     D = [[] for _ in range(max(degrees.values()) + 1)]
@@ -34,7 +34,7 @@ def degeneracy_ordering(graph: nx):
     return degeneracy_list
 
 
-def bron_kerbosch_degeneracy(graph, R=[], P=[], X=[]):
+def bron_kerbosch_degeneracy(graph: nx.Graph, R: list = [], P: list = [], X: list = []):
     P = list(graph.nodes())
     clique = []
     max_clique = []
